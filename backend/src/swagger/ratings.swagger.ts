@@ -36,6 +36,15 @@ export const GetRatingsByMovieIdSwagger = () =>
     ApiResponse({ status: 200, description: 'List of ratings for the movie.', type: ApiResponseDto })
   );
 
+export const GetMovieRatingStatsSwagger = () =>
+  applyDecorators(
+    ApiOperation({ summary: 'Get average and count of ratings for a movie' }),
+    ApiParam({ name: 'movieId', type: String }),
+    ApiResponse({ status: 200, description: 'Average and count of ratings for the movie.', schema: {
+      example: { average: 4.2, count: 15 }
+    } })
+  );
+
 export function RatingsAuthHeader() {
   return ApiHeader({ name: 'Authorization', description: 'Bearer access token', required: true, example: 'Bearer <jwt>' });
 } 

@@ -1,16 +1,15 @@
-import { ApiKeyGuard } from '@common/guards/api-key.guard';
 import { LoginGuard } from '@common/guards/login.guard';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Logger, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { PaginationQueryDto } from '../../common/pagination.dto';
 import { PaginatedResponseDto } from '../../common/response.dto';
-import { ActorsApiKeyHeader, ActorsAuthHeader, ActorsSwagger, CreateActorSwagger, DeleteActorSwagger, GetActorByIdSwagger, GetAllActorsSwagger, GetMoviesByActorSwagger, SearchActorsSwagger, UpdateActorSwagger } from '../../swagger/actors.swagger';
+import { ActorsSwagger, CreateActorSwagger, DeleteActorSwagger, GetActorByIdSwagger, GetAllActorsSwagger, GetMoviesByActorSwagger, SearchActorsSwagger, UpdateActorSwagger } from '../../swagger/actors.swagger';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
+import { SearchActorsQueryDto } from './dto/search-actors-query.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 
 @UseGuards(LoginGuard)
 @ActorsSwagger()
-@ActorsAuthHeader()
 @Controller('actors')
 export class ActorsController {
   private readonly logger = new Logger(ActorsController.name);
@@ -18,10 +17,8 @@ export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @Post()
-  @UseGuards(ApiKeyGuard)
   @HttpCode(HttpStatus.CREATED)
   @CreateActorSwagger()
-  @ActorsApiKeyHeader()
   create(@Body() createActorDto: CreateActorDto) {
     this.logger.log(`Creating new actor: ${createActorDto.firstName} ${createActorDto.lastName}`);
     return this.actorsService.create(createActorDto);
@@ -36,9 +33,9 @@ export class ActorsController {
 
   @Get('search')
   @SearchActorsSwagger()
-  async search(@Query('query') query: string, @Query() pagination: PaginationQueryDto): Promise<PaginatedResponseDto<any>> {
-    this.logger.log(`Searching actors with query: ${query}`);
-    return this.actorsService.searchPaginated(query, pagination);
+  async search(@Query() query: SearchActorsQueryDto): Promise<PaginatedResponseDto<any>> {
+    this.logger.log(`Searching actors with query: ${query.query}`);
+    return this.actorsService.searchPaginated(query.query || '', query);
   }
 
   @Get(':id')
@@ -56,10 +53,8 @@ export class ActorsController {
   }
 
   @Patch(':id')
-  @UseGuards(ApiKeyGuard)
   @HttpCode(HttpStatus.OK)
   @UpdateActorSwagger()
-  @ActorsApiKeyHeader()
   update(
     @Param('id') id: string, 
     @Body() updateActorDto: UpdateActorDto
@@ -69,10 +64,8 @@ export class ActorsController {
   }
 
   @Delete(':id')
-  @UseGuards(ApiKeyGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @DeleteActorSwagger()
-  @ActorsApiKeyHeader()
   remove(@Param('id') id: string) {
     this.logger.log(`Deleting actor with ID: ${id}`);
     return this.actorsService.remove(id);

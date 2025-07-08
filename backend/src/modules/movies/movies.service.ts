@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, In, Repository } from 'typeorm';
+import { DataSource, ILike, In, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../../common/pagination.dto';
 import { PaginatedResponseDto, PaginationMetaDto } from '../../common/response.dto';
 import { Actor } from '../actors/entities/actor.entity';
@@ -19,7 +19,8 @@ export class MoviesService {
     @InjectRepository(Actor)
     private actorsRepository: Repository<Actor>,
     @InjectRepository(MovieActor)
-    private movieActorsRepository: Repository<MovieActor>
+    private movieActorsRepository: Repository<MovieActor>,
+    private dataSource: DataSource
   ){}
 
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
@@ -112,9 +113,8 @@ export class MoviesService {
   }
 
   async addActorsToMovie(movieId: string, actorsId: string[]): Promise<Movie> {
-    this.logger.log(`Adding ${actorsId.length} actors to movie: ${movieId}`);
-    const movie = await this.moviesRepository.findOne({ where: { id: movieId } });
-
+    this.logger.log(`Syncing actors for movie: ${movieId}`);
+    const movie = await this.moviesRepository.findOne({ where: { id: movieId }, relations: ['movieActors'] });
     if(!movie) {
       this.logger.warn(`Movie with ID: ${movieId} was not found`);
       throw new NotFoundException({
@@ -123,24 +123,29 @@ export class MoviesService {
         data: { id: movieId }
       });
     }
+    await this.dataSource.transaction(async manager => {
 
-    const actors = await this.actorsRepository.find({ where: { id: In(actorsId) } });
-
-    if (actors.length !== actorsId.length) {
-      this.logger.warn(`Some actors were not found. Requested: ${actorsId.length}, Found: ${actors.length}`);
-    }
-
-    const movieActorsSaved = actors.map(actor => {
-      const movieActor = new MovieActor();
-      movieActor.movie = movie;
-      movieActor.actor = actor;
-      return movieActor;
+      const currentMovieActors = movie.movieActors || [];
+      const currentActorIds = currentMovieActors.map(ma => ma.actorId);
+      
+      const toRemove = currentMovieActors.filter(ma => !actorsId.includes(ma.actorId));
+      if (toRemove.length > 0) {
+        await manager.getRepository(MovieActor).remove(toRemove);
+      }
+      
+      const toAddIds = actorsId.filter(id => !currentActorIds.includes(id));
+      if (toAddIds.length > 0) {
+        const actorsToAdd = await manager.getRepository(Actor).findBy({ id: In(toAddIds) });
+        const movieActorsToAdd = actorsToAdd.map(actor => {
+          const ma = new MovieActor();
+          ma.movie = movie;
+          ma.actor = actor;
+          return ma;
+        });
+        await manager.getRepository(MovieActor).save(movieActorsToAdd);
+      }
     });
-
-    await this.movieActorsRepository.save(movieActorsSaved);
-    this.logger.log(`Successfully added ${actors.length} actors to movie: ${movie.title}`);
-
-    return await this.findOne(movieId);
+    return this.findOne(movieId);
   }
 
   async getActorsInMovie(movieId: string): Promise<Actor[]> {

@@ -11,6 +11,18 @@ export class ResponseInterceptor implements NestInterceptor {
 
 		return next.handle().pipe(
 			map((data) => {
+				// If data already has statusCode, timestamp, path, message, and data, return as is
+				if (
+					data &&
+					typeof data === 'object' &&
+					'statusCode' in data &&
+					'timestamp' in data &&
+					'path' in data &&
+					'data' in data
+				) {
+					return data;
+				}
+				// Otherwise, wrap as before
 				return {
 					statusCode: response.statusCode || 200,
 					timestamp: new Date().toISOString(),

@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../../common/pagination.dto';
 import { PaginatedResponseDto, PaginationMetaDto } from '../../common/response.dto';
 import { MovieActor } from '../movies/entities/movie-actor.entity';
@@ -160,8 +160,8 @@ export class ActorsService {
     const limit = pagination.limit || 20;
     const [items, total] = await this.actorsRepository.findAndCount({
       where: [
-        { firstName: Like(`%${query}%`) },
-        { lastName: Like(`%${query}%`) },
+        { firstName: ILike(`%${query}%`) },
+        { lastName: ILike(`%${query}%`) },
       ],
       skip: (page - 1) * limit,
       take: limit,

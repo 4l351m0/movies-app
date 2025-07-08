@@ -103,4 +103,12 @@ export class RatingsService {
       meta,
     };
   }
+
+  async getMovieRatingStats(movieId: string): Promise<{ average: number, count: number }> {
+    this.logger.log(`Calculating rating stats for movie: ${movieId}`);
+    const ratings = await this.ratingsRepository.find({ where: { movieId } });
+    const count = ratings.length;
+    const average = count > 0 ? ratings.reduce((sum, r) => sum + r.value, 0) / count : 0;
+    return { average, count };
+  }
 }

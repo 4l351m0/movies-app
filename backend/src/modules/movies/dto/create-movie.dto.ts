@@ -1,5 +1,5 @@
 import { IsInt, IsString, Length, Max, Min, MinLength } from "class-validator";
-import { CreateMovieReleaseYearSwagger, CreateMovieSynopsisSwagger, CreateMovieTitleSwagger } from '../../../swagger/movies-dto.swagger';
+import { CreateMovieDurationSwagger, CreateMovieGenresSwagger, CreateMovieGenreSwagger, CreateMoviePosterSwagger, CreateMovieReleaseYearSwagger, CreateMovieSynopsisSwagger, CreateMovieTitleSwagger } from '../../../swagger/movies-dto.swagger';
 
 export class CreateMovieDto {
 	@CreateMovieTitleSwagger()
@@ -19,4 +19,18 @@ export class CreateMovieDto {
 	@MinLength(10, { message: 'Synopsis must be at least 10 characters long' })
 	@Length(10, 2000, { message: 'Synopsis must be between 10 and 2000 characters' })
 	synopsis: string;
+
+	@CreateMovieGenreSwagger()
+	@IsString({ message: 'Genre should be a string' })
+	@Length(1, 100, { message: 'Genre must be between 1 and 100 characters' })
+	genre?: string;
+
+	@CreateMovieDurationSwagger()
+	duration?: number;
+
+	@CreateMovieGenresSwagger()
+	genres?: string[];
+
+	@CreateMoviePosterSwagger()
+	poster?: string;
 }

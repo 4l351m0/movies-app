@@ -2,7 +2,7 @@ import { LoginGuard } from '@common/guards/login.guard';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Logger, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { PaginationQueryDto } from '../../common/pagination.dto';
 import { PaginatedResponseDto } from '../../common/response.dto';
-import { CreateRatingSwagger, DeleteRatingSwagger, GetAllRatingsSwagger, GetRatingsByMovieIdSwagger, RatingsAuthHeader, RatingsSwagger } from '../../swagger/ratings.swagger';
+import { CreateRatingSwagger, DeleteRatingSwagger, GetAllRatingsSwagger, GetMovieRatingStatsSwagger, GetRatingsByMovieIdSwagger, RatingsAuthHeader, RatingsSwagger } from '../../swagger/ratings.swagger';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { RatingsService } from './ratings.service';
 
@@ -43,5 +43,12 @@ export class RatingsController {
   findRatingsByMovieId(@Param('movieId') movieId: string) {
     this.logger.log(`Fetching ratings for movie: ${movieId}`);
     return this.ratingsService.findRatingsByMovieId(movieId);
+  }
+
+  @Get('movie/:movieId/stats')
+  @GetMovieRatingStatsSwagger()
+  async getMovieRatingStats(@Param('movieId') movieId: string) {
+    this.logger.log(`Getting rating stats for movie: ${movieId}`);
+    return this.ratingsService.getMovieRatingStats(movieId);
   }
 }

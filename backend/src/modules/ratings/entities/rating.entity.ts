@@ -14,4 +14,7 @@ export class Rating {
 		{ onDelete: 'CASCADE' }
 	)
 	movie: Movie;
+
+	@Column({ name: 'movieId' })
+	movieId: string;
 }
