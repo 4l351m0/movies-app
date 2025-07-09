@@ -53,7 +53,6 @@ const MovieCard: FC<MovieCardProps> = ({ movie, onDelete }) => {
 
   return (
     <div className="flex flex-col gap-5 border w-[300px] rounded-[7px] border-solid border-[grey] relative group">
-      {/* Botón eliminar solo visible en hover */}
       <button
         onClick={handleDelete}
         className="absolute top-2 right-2 bg-red-600 rounded-full p-1 z-10 hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
@@ -104,13 +103,9 @@ const MovieCard: FC<MovieCardProps> = ({ movie, onDelete }) => {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
-          {movie.genre?.map((genre, index) => (
-            <span 
-              key={index}
-              className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-                <p>{genre}</p>
-            </span>
-          ))}
+          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
+              <p> { movie.genre } </p>
+          </span>
         </div>
 
         <div className="flex items-center gap-2 text-gray-600 text-sm mb-4">

@@ -24,24 +24,24 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder = 'Search...', onSearch, cl
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className={`flex items-center max-w-[1200px] gap-2 ${className ?? ''}`}>
+		<form onSubmit={handleSubmit} className={`flex items-center max-w-[1200px] gap-[15px] ${className ?? ''}`}>
 			<input
 				type="text"
 				value={query}
 				onChange={handleInputChange}
 				placeholder={placeholder}
-				className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+				className="border rounded p-[10px] rounded-[7px] w-full focus:outline-none focus:ring-2 focus:ring-blue-400 my-[15px]"
 			/>
 			<button
 				type="submit"
-				className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+				className="bg-blue-500 text-white px-[5px] py-[3px] rounded hover:bg-blue-600 transition-colors"
 			>
 				Search
 			</button>
 			<button
 				type="button"
 				onClick={handleClear}
-				className="bg-gray-300 text-gray-700 px-3 py-2 rounded hover:bg-gray-400 transition-colors">
+				className="bg-gray-300 text-gray-700 px-[5px] py-[3px] rounded hover:bg-gray-400 transition-colors">
 					Clear
 			</button>
 		</form>

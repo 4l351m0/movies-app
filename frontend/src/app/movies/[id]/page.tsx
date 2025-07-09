@@ -92,7 +92,6 @@ const MovieDetailPage: FC = () => {
 			{movie.poster && <img src={movie.poster} alt={movie.title} style={{ maxWidth: 300, marginBottom: 8 }} />}
 			<h1>{movie.title} ({movie.releaseYear})</h1>
 			{movie.duration && <div>Duration: {movie.duration} min</div>}
-			{movie.genres && movie.genres.length > 0 && <div>Genres: {movie.genres.join(', ')}</div>}
 			{movie.genre && <div>Genre: {movie.genre}</div>}
 			<p>{movie.synopsis}</p>
 

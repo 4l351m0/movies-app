@@ -26,8 +26,7 @@ const ActorCard: FC<ActorCardProps> = ({ actor, onDelete }) => {
     }
   };
   return (
-    <div className="flex flex-col items-center bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 max-w-32 group cursor-pointer relative">
-      {/* Botón eliminar solo visible en hover */}
+    <div className="flex flex-col border rounded-[7px] p-[15px] items-center rounded-xl shadow-md hover:shadow-lg transition-all duration-300 max-w-32 group cursor-pointer relative">
       <button
         onClick={handleDelete}
         className="absolute top-2 right-2 bg-red-600 rounded-full p-1 z-10 hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
@@ -44,9 +43,8 @@ const ActorCard: FC<ActorCardProps> = ({ actor, onDelete }) => {
         </div>
       </div>
 
-      {/* Actor Info */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-gray-800 mb-1 leading-tight">
+        <h4 className="text-sm font-bold text-gray-800 mb-[3px] leading-tight">
           { actor.firstName } { actor.lastName }
         </h4>
         {actor.birthDate && <p className="text-xs text-gray-500 leading-tight">Birth Date: { formatDate(actor.birthDate) }</p>}

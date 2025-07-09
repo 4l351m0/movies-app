@@ -53,12 +53,12 @@ export default function Login() {
 				visible={toast.visible}
 				onClose={() => setToast({ ...toast, visible: false })}
 			/>
-			<div className="text-center py-10 flex flex-col justify-center items-center gap-2 h-[100dvh] w-[100%]">
+			<div className="text-center py-[10px] flex flex-col justify-center items-center gap-[10px] h-[100dvh] w-[100%]">
 				<form className="border flex flex-col p-[20px] rounded-[7px] justify-around items-center border-solid border-[grey] gap-[15px]" onSubmit={handleSubmit}>
 					<div className="flex flex-row gap-[20px]">
 						<label htmlFor="username">Username</label>
 						<input
-							className="px-10 py-20"
+							className="px-[10px] py-[5px]"
 							id="username"
 							name="username"
 							type="text"
@@ -67,10 +67,10 @@ export default function Login() {
 							required
 						/>
 					</div>
-					<div>
+					<div className="flex flex-row gap-[20px]">
 						<label htmlFor="password">Password</label>
 						<input
-							className="px-10 py-20"
+							className="px-[10px] py-[5px]"
 							id="password"
 							name="password"
 							type="password"
@@ -80,7 +80,7 @@ export default function Login() {
 						/>
 					</div>
 					{error && <div>{error}</div>}
-					<button type="submit" disabled={loading}>
+					<button className="px-[15px] py-[5px] w-full" type="submit" disabled={loading}>
 						{loading ? "Logging In..." : "Login"}
 					</button>
 				</form>

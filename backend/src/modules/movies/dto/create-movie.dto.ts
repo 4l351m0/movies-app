@@ -1,5 +1,5 @@
 import { IsInt, IsString, Length, Max, Min, MinLength } from "class-validator";
-import { CreateMovieDurationSwagger, CreateMovieGenresSwagger, CreateMovieGenreSwagger, CreateMoviePosterSwagger, CreateMovieReleaseYearSwagger, CreateMovieSynopsisSwagger, CreateMovieTitleSwagger } from '../../../swagger/movies-dto.swagger';
+import { CreateMovieDurationSwagger, CreateMovieGenreSwagger, CreateMoviePosterSwagger, CreateMovieReleaseYearSwagger, CreateMovieSynopsisSwagger, CreateMovieTitleSwagger } from '../../../swagger/movies-dto.swagger';
 
 export class CreateMovieDto {
 	@CreateMovieTitleSwagger()
@@ -26,11 +26,10 @@ export class CreateMovieDto {
 	genre?: string;
 
 	@CreateMovieDurationSwagger()
+	@IsInt({ message: 'Duration should be a number' })
 	duration?: number;
 
-	@CreateMovieGenresSwagger()
-	genres?: string[];
-
 	@CreateMoviePosterSwagger()
+	@IsString({ message: 'Poster should be a string' })
 	poster?: string;
 }

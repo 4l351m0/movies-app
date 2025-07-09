@@ -29,10 +29,6 @@ export class Movie {
 	@Column({ nullable: true })
 	duration?: number;
 
-	@ApiProperty({ example: ['Action', 'Adventure', 'Sci-Fi'], description: 'Genres of the movie', required: false, type: [String] })
-	@Column('text', { array: true, nullable: true })
-	genres?: string[];
-
 	@ApiProperty({ type: () => [Rating], required: false })
 	@OneToMany(() => Rating, rating => rating.movie)
 	ratings: Rating[];

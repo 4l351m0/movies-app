@@ -47,24 +47,23 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange
 	const visiblePages = getVisiblePages();
 
 	return (
-		<div className="flex items-center justify-center gap-2 py-4">
-			{/* Previous Button */}
+		<div className="flex items-center justify-center gap-[5px] py-[5px]">
 			<button
 				onClick={handlePrev}
 				disabled={currentPage === 1}
 				className={`
-					flex items-center gap-1 px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-200
+					flex items-center rounded-[7px] gap-[5px] px-[10px] border text-sm font-medium transition-all duration-200
 					${currentPage === 1 
 						? 'text-gray-400 border-gray-200 cursor-not-allowed bg-gray-50' 
 						: 'text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 bg-white'
 					}
 				`}>
-				<ChevronLeft className="w-4 h-4" />
+				<ChevronLeft className="w-[4px] h-[4px]" />
 				Previous
 			</button>
 
 			{/* Page Numbers */}
-			<div className="flex items-center gap-1 mx-4">
+			<div className="flex items-center gap-[3px] mx-[5px]">
 				{visiblePages.map((page) => (
 					<button
 						key={page}
@@ -81,12 +80,11 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange
 				))}
 			</div>
 
-			{/* Next Button */}
 			<button
 				onClick={handleNext}
 				disabled={currentPage === totalPages}
 				className={`
-					flex items-center gap-1 px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-200
+					flex items-center rounded-[7px] gap-[5px] px-[10px] border text-sm font-medium transition-all duration-200
 					${currentPage === totalPages 
 						? 'text-gray-400 border-gray-200 cursor-not-allowed bg-gray-50' 
 						: 'text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-gray-400 bg-white'
@@ -96,7 +94,6 @@ const Pagination: FC<PaginationProps> = ({ currentPage, totalPages, onPageChange
 				<ChevronRight className="w-4 h-4" />
 			</button>
 
-			{/* Page Info */}
 			<div className="ml-4 text-sm text-gray-500 whitespace-nowrap">
 			{currentPage} of {totalPages}
 			</div>

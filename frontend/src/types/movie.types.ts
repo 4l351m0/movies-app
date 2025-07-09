@@ -6,9 +6,8 @@ export interface Movie {
   title: string;
   releaseYear: number;
   synopsis: string;
-  genre?: string[];
+  genre?: string;
   duration?: number;
-  genres?: string[];
   poster?: string;
   ratings?: Rating[];
   movieActors?: MovieActor[];
@@ -18,9 +17,8 @@ export interface CreateMovieDto {
   title: string;
   releaseYear: number;
   synopsis: string;
-  genre?: string[];
+  genre?: string;
   duration?: number;
-  genres?: string[];
   poster?: string;
 }
 
